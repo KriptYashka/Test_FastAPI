@@ -1,11 +1,13 @@
 from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel
 
 
-class Task(BaseModel):
-   id: str
-   title: str
-   description: str
+class STask(BaseModel):
+   id: int
+   name: str
+   description: Optional[str]
    category: str
    due_date: datetime
    priority: str
