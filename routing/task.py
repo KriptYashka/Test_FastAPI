@@ -4,7 +4,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 
 from depends import get_task_service
-from schemas.task import STask
+from schemas.task import STask, STaskBody
 from services.task import TaskService
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -30,7 +30,7 @@ async def get_all_books(
    description="Создание задачи",
 )
 async def get_all_tasks(
-        _task: STask,
+        _task: STaskBody,
         task_service: TaskService = Depends(get_task_service),
 ) -> STask:
    logging.debug("Создание задачи")

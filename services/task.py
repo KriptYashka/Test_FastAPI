@@ -13,7 +13,8 @@ class TaskService:
         return result
 
     def create_task(self, task: STask) -> STask:
-        result = self.repository.create_task(task)
+        task_id = self.repository.get_next_id()
+        result = self.repository.create_task(task_id, task)
         return result
 
     def update_task(self, task: STask) -> STask:
