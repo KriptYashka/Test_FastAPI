@@ -39,8 +39,16 @@ class TaskRepository:
         return None
 
     @classmethod
-    def update_task(cls, task: STask) -> STask:
-        pass
+    def update_task(cls, task_id: str, task: STaskBody) -> Optional[STask]:
+        with open(path_to_json, "r", encoding='utf-8') as file:
+            json_data = json.load(file)
+        if task_id in json_data:
+            json_data[task_id] = task.model_dump()
+            with open(path_to_json, "w", encoding='utf-8') as file:
+                json.dump(json_data, file, ensure_ascii=False, indent=4)
+            s_task = STask(id=int(task_id), **json_data[task_id])
+            return s_task
+        return None
 
     @classmethod
     def get_next_id(cls) -> int:
@@ -48,5 +56,5 @@ class TaskRepository:
             json_data = json.load(file)
         max_id = 0
         for task_id in json_data:
-            max_id = max(max_id, task_id)
+            max_id = max(max_id, int(task_id))
         return max_id + 1

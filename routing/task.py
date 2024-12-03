@@ -50,3 +50,17 @@ async def get_task(
 ) -> STask:
    task = task_service.get_task(task_id)
    return task
+
+@router.put(
+   "/{task_id}/",
+   responses={400: {"description": "Bad request"}},
+   response_model=Optional[STask],
+   description="Обновление задачи",
+)
+async def update_task(
+        task_id: str,
+        task_body: STaskBody,
+        task_service: TaskService = Depends(get_task_service),
+) -> STask:
+   task = task_service.update_task(task_id, task_body)
+   return task
