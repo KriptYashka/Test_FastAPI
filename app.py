@@ -14,7 +14,7 @@ async def lifespan(app: FastAPI):
    logging.basicConfig(level=logging.DEBUG)
    if not os.path.exists(path_to_json):
       with open(path_to_json, "w", encoding='utf-8') as f:
-         json.dump(dict(tasks=[]), f)
+         json.dump(dict(), f)
    yield
    print("Сервер остановлен")
 
