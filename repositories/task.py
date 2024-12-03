@@ -9,6 +9,16 @@ import json
 
 class TaskRepository:
     @classmethod
+    def get_next_id(cls) -> int:
+        with open(path_to_json, "r", encoding='utf-8') as file:
+            json_data = json.load(file)
+        max_id = 0
+        for task_id in json_data:
+            max_id = max(max_id, int(task_id))
+        return max_id + 1
+
+
+    @classmethod
     def create_task(cls, task_id: int, task_body: STaskBody) -> STask:
         with open(path_to_json, "r", encoding='utf-8') as file:
             json_data = json.load(file)
@@ -51,10 +61,14 @@ class TaskRepository:
         return None
 
     @classmethod
-    def get_next_id(cls) -> int:
+    def delete_task(cls, task_id: str) -> dict:
         with open(path_to_json, "r", encoding='utf-8') as file:
             json_data = json.load(file)
-        max_id = 0
-        for task_id in json_data:
-            max_id = max(max_id, int(task_id))
-        return max_id + 1
+        response = {"status": "OK"}
+        if task_id in json_data:
+            del json_data[task_id]
+            with open(path_to_json, "w", encoding='utf-8') as file:
+                json.dump(json_data, file, ensure_ascii=False, indent=4)
+        else:
+            response["status"] = f"ID: {task_id} not exists"
+        return response

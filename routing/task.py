@@ -47,7 +47,7 @@ async def get_all_tasks(
 async def get_task(
         task_id: str,
         task_service: TaskService = Depends(get_task_service),
-) -> STask:
+) -> Optional[STask]:
    task = task_service.get_task(task_id)
    return task
 
@@ -61,6 +61,19 @@ async def update_task(
         task_id: str,
         task_body: STaskBody,
         task_service: TaskService = Depends(get_task_service),
-) -> STask:
+) -> Optional[STask]:
    task = task_service.update_task(task_id, task_body)
+   return task
+
+@router.delete(
+   "/{task_id}/",
+   responses={400: {"description": "Bad request"}},
+   response_model=dict,
+   description="Удаление задачи",
+)
+async def delete_task(
+        task_id: str,
+        task_service: TaskService = Depends(get_task_service),
+) -> dict:
+   task = task_service.delete_task(task_id)
    return task

@@ -24,3 +24,7 @@ class TaskService:
     def update_task(self, task_id: str, task: STaskBody) -> Optional[STask]:
         result = self.repository.update_task(task_id, task)
         return result
+
+    def delete_task(self, task_id: str) -> dict:
+        result = self.repository.delete_task(task_id)
+        return result
