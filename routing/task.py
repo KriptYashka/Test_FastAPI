@@ -34,3 +34,16 @@ async def get_all_tasks(
 ) -> STask:
    task = await task_service.create_task(_task)
    return task
+
+@router.put(
+   "",
+   responses={400: {"description": "Bad request"}},
+   response_model=STask,
+   description="Редактирование задачи",
+)
+async def update_task(
+        _task: STask,
+        task_service: TaskService = Depends(get_task_service),
+) -> STask:
+   task = await task_service.update_task(_task)
+   return task

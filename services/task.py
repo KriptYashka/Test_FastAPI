@@ -15,3 +15,7 @@ class TaskService:
     async def create_task(self, task: STask) -> STask:
         result = await self.repository.create_task(task)
         return result
+
+    async def update_task(self, task: STask) -> STask:
+        result = await self.repository.update_task(task)
+        return result
