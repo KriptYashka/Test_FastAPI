@@ -10,7 +10,7 @@ class STaskBody(BaseModel):
    name: str
    description: Optional[str]
    category: str
-   due_date: datetime
+   due_date: str
    priority: str
    status: str
 

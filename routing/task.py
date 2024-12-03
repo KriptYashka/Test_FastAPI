@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from fastapi import APIRouter, Depends
@@ -18,7 +19,7 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 async def get_all_books(
        task_service: TaskService = Depends(get_task_service),
 ) -> List[STask]:
-   books = await task_service.get_tasks()
+   books = task_service.get_tasks()
    return books
 
 
@@ -32,7 +33,9 @@ async def get_all_tasks(
         _task: STask,
         task_service: TaskService = Depends(get_task_service),
 ) -> STask:
-   task = await task_service.create_task(_task)
+   logging.debug("Создание задачи")
+   task = task_service.create_task(_task)
+   logging.debug("Задача создана")
    return task
 
 @router.put(
@@ -45,5 +48,5 @@ async def update_task(
         _task: STask,
         task_service: TaskService = Depends(get_task_service),
 ) -> STask:
-   task = await task_service.update_task(_task)
+   task = task_service.update_task(_task)
    return task

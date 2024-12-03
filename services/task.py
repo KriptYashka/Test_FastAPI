@@ -8,14 +8,14 @@ class TaskService:
     def __init__(self, repository: TaskRepository) -> None:
         self.repository = repository
 
-    async def get_tasks(self) -> List[STask]:
-        result = await self.repository.get_tasks()
+    def get_tasks(self) -> List[STask]:
+        result = self.repository.get_tasks()
         return result
 
-    async def create_task(self, task: STask) -> STask:
-        result = await self.repository.create_task(task)
+    def create_task(self, task: STask) -> STask:
+        result = self.repository.create_task(task)
         return result
 
-    async def update_task(self, task: STask) -> STask:
-        result = await self.repository.update_task(task)
+    def update_task(self, task: STask) -> STask:
+        result = self.repository.update_task(task)
         return result
