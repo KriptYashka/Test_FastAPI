@@ -17,10 +17,13 @@ class TaskRepository:
 
     @classmethod
     def get_tasks(cls) -> list[STask]:
-        file = open(path_to_json, "r", encoding='utf-8', ensure_ascii=False, indent=4)
-        json_data = json.load(file)
-        print(json_data)
-        return dict(data="OK")
+        with open(path_to_json, "r", encoding='utf-8') as file:
+            json_data = json.load(file)
+        s_tasks = []
+        for task in json_data["tasks"]:
+            s_task = STask(**task)
+            s_tasks.append(s_task)
+        return s_tasks
 
     @classmethod
     def get_task(cls, obj_id: int):
