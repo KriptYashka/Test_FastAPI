@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from fastapi import APIRouter, Depends
 
@@ -39,16 +39,19 @@ async def get_all_tasks(
    return task
 
 @router.get(
-   "/{task_id}/",
+   "/{task_data}/",
    responses={400: {"description": "Bad request"}},
-   response_model=Optional[STask],
+   response_model=Union[Optional[STask], List[STask]],
    description="Получение задачи",
 )
 async def get_task(
-        task_id: str,
+        task_data: str,
         task_service: TaskService = Depends(get_task_service),
 ) -> Optional[STask]:
-   task = task_service.get_task(task_id)
+   if task_data.isdigit():
+      task = task_service.get_task_by_id(task_data)
+   else:
+      task = task_service.get_task_by_category(task_data)
    return task
 
 @router.put(
@@ -63,6 +66,19 @@ async def update_task(
         task_service: TaskService = Depends(get_task_service),
 ) -> Optional[STask]:
    task = task_service.update_task(task_id, task_body)
+   return task
+
+@router.put(
+   "/{task_id}/done/",
+   responses={400: {"description": "Bad request"}},
+   response_model=Optional[STask],
+   description="Обновление задачи (выполнено)",
+)
+async def update_done_task(
+        task_id: str,
+        task_service: TaskService = Depends(get_task_service),
+) -> Optional[STask]:
+   task = task_service.update_done_task(task_id)
    return task
 
 @router.delete(
