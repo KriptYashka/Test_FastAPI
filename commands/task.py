@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 import typer
+from pydantic_core._pydantic_core import ValidationError
 
 from depends import get_task_service
 from schemas.task import STask, STaskBody
@@ -21,6 +22,33 @@ def get_task(task_search: str):
    task = get_task_service().get_task(task_search)
    print(task)
 
+
+@app.command(
+   name="create"
+)
+def create_task(
+         name: str,
+         description: str,
+         category: str,
+         due_date: str,
+         priority: str,
+         status: str
+):
+
+   try:
+      task_body = STaskBody(
+         name = name,
+         description = description,
+         category = category,
+         due_date = due_date,
+         priority = priority,
+         status = status)
+      STaskBody.model_validate(task_body)
+   except ValidationError as e:
+      print(e)
+   else:
+      task = get_task_service().create_task(task_body)
+      print(task)
 # @router.post(
 #    "/",
 #    responses={400: {"description": "Bad request"}},
