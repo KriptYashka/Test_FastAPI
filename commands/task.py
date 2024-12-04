@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import List, Optional
 
 import typer
-from pydantic_core._pydantic_core import ValidationError
 
 from depends import get_task_service
 from schemas.task import STask, STaskBody
@@ -13,6 +12,9 @@ app = typer.Typer()
     name="all"
 )
 def get_all_tasks():
+    """
+    Выводит все задачи.
+    """
     tasks = get_task_service().get_tasks()
     for task in tasks:
         print(task)
@@ -24,6 +26,11 @@ def get_task(
         id: Optional[int] = None,
         category: Optional[str] = None,
 ):
+    """
+    Выводит задачи по одному из заданных опций:
+    --id
+    --category
+    """
     if id is not None:
         task = get_task_service().get_task_by_id(str(id))
         print(task)
@@ -33,8 +40,6 @@ def get_task(
             print(task)
     else:
         print("Enter one of both options. --help for information.")
-        return
-
 
 
 @app.command(
@@ -48,6 +53,9 @@ def create_task(
         priority:    str,
         status:      str
 ):
+    """
+    Создаёт задачу. Параметры можно посмотреть по команде `python app.py add --help`.
+    """
     task_body = STaskBody(
         name = name,
         description = description,
@@ -71,6 +79,9 @@ def update_task(
         priority:    Optional[str] = None,
         status:      Optional[str] = None
 ):
+    """
+    Обновляет параметры задачи. Опции можно посмотреть по команде `python app.py update --help`.
+    """
     task = get_task_service().get_task_by_id(str(task_id))
     task_body = STaskBody(
         name= name or task.name,
@@ -89,6 +100,9 @@ def update_task(
 def update_done_task(
         task_id: int
 ):
+    """
+    Обновляет статус с tack_id задачи на "Выполнено".
+    """
     result = get_task_service().update_done_task(str(task_id))
     print(result)
 
@@ -98,5 +112,8 @@ def update_done_task(
 def delete_task(
         task_id: int
 ):
+    """
+    Удаляет задачу с task_id.
+    """
     result = get_task_service().delete_task(str(task_id))
     print(result)
