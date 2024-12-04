@@ -11,7 +11,7 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
 @router.get(
-   "/",
+   "",
    responses={400: {"description": "Bad request"}},
    response_model=List[STask],
    description="Получение всех задач",
@@ -24,7 +24,7 @@ async def get_all_books(
 
 
 @router.post(
-   "/",
+   "",
    responses={400: {"description": "Bad request"}},
    response_model=STask,
    description="Создание задачи",
@@ -39,7 +39,7 @@ async def get_all_tasks(
    return task
 
 @router.get(
-   "/{task_data}/",
+   "/{task_data}",
    responses={400: {"description": "Bad request"}},
    response_model=Union[Optional[STask], List[STask]],
    description="Получение задачи",
@@ -55,7 +55,7 @@ async def get_task(
    return task
 
 @router.put(
-   "/{task_id}/",
+   "/{task_id}",
    responses={400: {"description": "Bad request"}},
    response_model=Optional[STask],
    description="Обновление задачи",
@@ -69,7 +69,7 @@ async def update_task(
    return task
 
 @router.put(
-   "/{task_id}/done/",
+   "/{task_id}/done",
    responses={400: {"description": "Bad request"}},
    response_model=Optional[STask],
    description="Обновление задачи (выполнено)",
@@ -82,7 +82,7 @@ async def update_done_task(
    return task
 
 @router.delete(
-   "/{task_id}/",
+   "/{task_id}",
    responses={400: {"description": "Bad request"}},
    response_model=dict,
    description="Удаление задачи",
